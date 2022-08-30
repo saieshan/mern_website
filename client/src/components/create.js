@@ -17,6 +17,10 @@ export default function Create() {
      return { ...prev, ...value };
    });
  }
+
+ function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
  
  // This function will handle the submission.
  async function onSubmit(e) {
@@ -24,6 +28,11 @@ export default function Create() {
  
    // When a post request is sent to the create url, we'll add a new record to the database.
    const newPerson = { ...form };
+
+   if(!isValidEmail(newPerson.email)) {
+    window.alert("Invalid email address");
+    return;
+   }
 
    var templateParams = {
     to_name: newPerson.name,
