@@ -21,6 +21,10 @@ export default function Create() {
  function isValidEmail(email) {
   return /\S+@\S+\.\S+/.test(email);
 }
+
+function isValidHeight(height) {
+  return /\(|\)|\d{3}/.test(height); //    \(|\)|\d{3}       [1-9][0-9][0-9]
+}
  
  // This function will handle the submission.
  async function onSubmit(e) {
@@ -28,8 +32,30 @@ export default function Create() {
  
    // When a post request is sent to the create url, we'll add a new record to the database.
    const newPerson = { ...form };
+   var invalidEmail = 0;
+   var invalidHeight = 0;
+
+   if(!isValidHeight(newPerson.height))
+   {
+    invalidHeight = 1;
+   }
 
    if(!isValidEmail(newPerson.email)) {
+    invalidEmail = 1;
+   }
+
+   if(invalidHeight == 1 && invalidEmail == 1)
+   {
+    window.alert("Invalid height and email address");
+    return;
+   }
+   else if(invalidHeight == 1 && invalidEmail == 0)
+   {
+    window.alert("Invalid height");
+    return;
+   }
+   else if(invalidHeight == 0 && invalidEmail == 1)
+   {
     window.alert("Invalid email address");
     return;
    }
@@ -80,7 +106,7 @@ export default function Create() {
          />
        </div>
        <div className="form-group">
-         <label htmlFor="height">Height</label>
+         <label htmlFor="height">Height (cm)</label>
          <input
            type="text"
            className="form-control"
